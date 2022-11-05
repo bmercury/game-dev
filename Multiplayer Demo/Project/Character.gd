@@ -2,13 +2,11 @@ extends CharacterBody2D
 
 
 const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
-
-# Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 func _ready():
 	$Networking/MultiplayerSync.set_multiplayer_authority(str(name).to_int())
+	_change_spawn()
+	$Nickname.text = str(name)
 	
 func _is_local_authority():
 	return $Networking/MultiplayerSync.get_multiplayer_authority() == multiplayer.get_unique_id()
@@ -37,4 +35,18 @@ func _physics_process(delta):
 		if not $Networking.processed_position:
 			position = $Networking.sync_position
 			$Networking.processed_position = true
+		
+
+func _change_spawn():
+	var spawn_x = randi_range(200,400)
+	var spawn_y = randi_range(200,400)
+	position = Vector2(spawn_x,spawn_y)	
+	$Networking.sync_position = position
+		
+		
+		
+		
+		
+		
+		
 		
